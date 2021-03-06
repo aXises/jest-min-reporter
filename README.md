@@ -1,39 +1,68 @@
-# Jest summarizing reporter
+# Jest Compact Reporter
 
-Custom reporter for Jest that only prints the summary of the test run. With `diffs` option, also prints the default error messages aka diffs [before the summary](#withDiffsExmaple).
+Fork of [Sunfit's jest-summary-reporter](https://github.com/sunfit/jest-summary-reporter). Rewritten in [TypeScript](https://www.typescriptlang.org/) with a few additional options.
 
-[![jestsummaryreporternodiffssmall](https://user-images.githubusercontent.com/46559896/50974595-455fe900-14f4-11e9-8a5b-c69d367926d5.png)](https://user-images.githubusercontent.com/46559896/50974595-455fe900-14f4-11e9-8a5b-c69d367926d5.png)
+## Motivation
 
-Personally I think this behaviour should not require a custom reporter,
-and the level of similarity between this and the default output should be proof enough.
+The default Jest reporter output is sometimes too fancy, especially in environments which doesn't support things such as colours etc. This can make the output difficult to read.
 
-Tested only on my windows machine with a simple pet project.
+This custom reporter will print a more compact form of the information showing only the failed tests by default.
 
-If you have any questions or suggestions contact me by e-mail.
+Additional options are available to customise the output. See [options](#options).
 
-It came to my attention (a little too late) that at least 3 packages with same functionality already exist [npm search results for jest summary reporters](https://www.npmjs.com/search?q=jest%20summary%20reporter)
+## Examples
 
-So if you have found this repo but it is not working out for you for some reason, check out above link.
+### Default
+
+### No colours
+
+### Show passing tests
+
+### No diffs
+
+### Mixed tests
 
 ## Installation
 
+### With NPM
+
 ```
-npm i -D jest-summarizing-reporter
+npm i -D jest-compact-reporter
+```
+
+### With Yarn
+
+```
+yarn add jest-compact-reporter -D
 ```
 
 ## Usage
 
-CLI:
+### CLI
 
 ```
-jest --reporters jest-summarizing-reporter
+jest <...args> --reporters jest-compact-reporter
 ```
 
-Jest Config:
+### Jest Config
+
+No options
 
 ```
+// jest.config.js or jest.config.ts
 {
-  "reporters": ["jest-summarizing-reporter"]
+  "reporters": ["jest-compact-reporter"]
+}
+```
+
+With options
+
+```
+// jest.config.js or jest.config.ts
+{
+  "reporters": [
+      ["jest-compact-reporter", { diffs: true, colours: true, showPassingTests: false }]
+    ]
 }
 ```
 
@@ -41,30 +70,31 @@ Jest Config:
 
 ### diffs
 
-If enabled prints jests default error explanations before the summary
+Defaults to `true`. If enabled prints jests default error explanations for each failing test.
 
-```
-{
-  "reporters": [
-    ["jest-summarizing-reporter", {diffs: true}]
-  ]
-}
-```
+### colours
 
-## Output examples
+Defaults to `true`. If enabled adds colours to the output for improved readability. Disable when a environment doesn't support colours.
 
-Default output:
+### showPassingTests
 
-[![jestsummaryreporternodiffs](https://user-images.githubusercontent.com/46559896/50972422-45a9b580-14ef-11e9-9d64-62202d00c6f9.png)](https://user-images.githubusercontent.com/46559896/50972422-45a9b580-14ef-11e9-9d64-62202d00c6f9.png)
+Defaults to `false`. If enabled shows test names of passing tests as well rather than just the suite.
 
-<a name="withDiffsExmaple"></a>With `diffs` option:
+# Contributing
 
-[![jestsummaryreporter](https://user-images.githubusercontent.com/46559896/50972423-46424c00-14ef-11e9-8218-40459b150cde.png)](https://user-images.githubusercontent.com/46559896/50972423-46424c00-14ef-11e9-8218-40459b150cde.png)
+## Requirements
 
-When all tests pass:
+-   Node 12+
+-   Jest 20+
+-   NPM 6 or Yarn
 
-[![jestsummaryreportersuccess](https://user-images.githubusercontent.com/46559896/50972424-46424c00-14ef-11e9-8c21-8f986d9d2379.png)](https://user-images.githubusercontent.com/46559896/50972424-46424c00-14ef-11e9-8c21-8f986d9d2379.png)
+## Developing
+
+1. Run `npm install` or `yarn install`
+2. Run `npm build-and-test` to test changes to the reporter. Note the default `jest.config.ts` has already been setup to use the developement reporter.
 
 ## License
 
-Unlicense
+Unlicense Licence
+
+See [LICENCE.md](https://github.com/aXises/jest-compact-reporter/blob/master/LICENSE.md)
