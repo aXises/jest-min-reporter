@@ -14,13 +14,29 @@ Additional options are available to customise the output. See [options](#options
 
 ### Default
 
+![default-output](images/default.jpg)
+
 ### No colours
+
+![default-output](images/no-colours.jpg)
 
 ### Show passing tests
 
+With single test
+
+![default-output](images/show-passing-tests.jpg)
+
+With multiple tests
+
+![default-output](images/show-passing-tests-all.jpg)
+
 ### No diffs
 
+![default-output](images/no-diffs.jpg)
+
 ### Mixed tests
+
+![default-output](images/mixed-failing.jpg)
 
 ## Installation
 
