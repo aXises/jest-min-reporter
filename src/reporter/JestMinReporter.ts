@@ -10,7 +10,7 @@ import {
     printPassedSuites,
     printSummary,
     printUncheckedSnapshotsSummary,
-} from "./utils";
+} from "../utils";
 
 export type ReporterOptions = {
     diffs: boolean;
@@ -28,8 +28,8 @@ export class JestMinReporter extends BaseReporter {
         super();
         this.globalConfig = globalConfig;
         this.options = {
-            diffs: options.diffs || false,
-            colours: options.colours || false,
+            diffs: options.diffs === undefined ? true : options.diffs,
+            colours: options.colours === undefined ? true : options.colours,
         };
         global.reporterGlobals = { coloursEnabled: this.options.colours };
     }
