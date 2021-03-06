@@ -15,7 +15,6 @@ It came to my attention (a little too late) that at least 3 packages with same f
 
 So if you have found this repo but it is not working out for you for some reason, check out above link.
 
-
 ## Installation
 
 ```
@@ -29,6 +28,7 @@ CLI:
 ```
 jest --reporters jest-summarizing-reporter
 ```
+
 Jest Config:
 
 ```
@@ -40,7 +40,9 @@ Jest Config:
 ## Options
 
 ### diffs
+
 If enabled prints jests default error explanations before the summary
+
 ```
 {
   "reporters": [
@@ -50,6 +52,7 @@ If enabled prints jests default error explanations before the summary
 ```
 
 ## Output examples
+
 Default output:
 
 [![jestsummaryreporternodiffs](https://user-images.githubusercontent.com/46559896/50972422-45a9b580-14ef-11e9-9d64-62202d00c6f9.png)](https://user-images.githubusercontent.com/46559896/50972422-45a9b580-14ef-11e9-9d64-62202d00c6f9.png)

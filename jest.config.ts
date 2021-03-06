@@ -5,7 +5,9 @@ const config: Config.InitialOptions = {
     preset: "ts-jest",
     testEnvironment: "node",
     verbose: true,
-    reporters: [[path.join(__dirname, "dist"), { colours: true, diffs: false }]],
+    reporters: [
+        [path.join(__dirname, "dist"), { colours: true, diffs: false }],
+    ],
     testMatch: [path.join(__dirname, "test", "**", "*")],
 };
 
