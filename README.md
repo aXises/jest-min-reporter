@@ -86,11 +86,11 @@ With options
 
 ### diffs
 
-Defaults to `true`. If enabled prints jests default error explanations for each failing test.
+Defaults to `true`. If enabled prints Jest's default error explanations for each failing test.
 
 ### colours
 
-Defaults to `true`. If enabled adds colours to the output for improved readability. Disable when a environment doesn't support colours.
+Defaults to `true`. If enabled adds colours to the output for improved readability. Disable when an environment doesn't support colours.
 
 ### showPassingTests
 
@@ -107,7 +107,7 @@ Defaults to `false`. If enabled shows test names of passing tests as well rather
 ## Developing
 
 1. Run `npm install` or `yarn install`
-2. Run `npm build-and-test` to test changes to the reporter. Note the default `jest.config.ts` has already been setup to use the developement reporter.
+2. Run `npm build-and-test` to test changes to the reporter. Note the default `jest.config.ts` has already been setup to use the development reporter.
 
 ## License
 
