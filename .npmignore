@@ -1,0 +1,10 @@
+src/**/*
+images/**/*
+jest.config.ts
+tsconfig.json
+tsconfig.prod.json
+.eslintrc
+.prettierrc
+dist/**/*.js.map
+@types/**/*
+tests/**/*
