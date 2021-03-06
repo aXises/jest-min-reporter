@@ -1,4 +1,4 @@
-import { JestMinReporter } from "./JestMinReporter";
+import { JestMinReporter } from "./reporter";
 import "./utils/array";
 
 export default JestMinReporter;

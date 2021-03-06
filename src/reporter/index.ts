@@ -1,0 +1,1 @@
+export { JestMinReporter } from "./JestMinReporter";
