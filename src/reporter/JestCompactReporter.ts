@@ -18,7 +18,7 @@ export type ReporterOptions = {
     showPassingTests: boolean;
 };
 
-export class JestMinReporter extends BaseReporter {
+export class JestCompactReporter extends BaseReporter {
     protected globalConfig: Config.ConfigGlobals;
     protected options: ReporterOptions;
 

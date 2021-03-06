@@ -1,1 +1,1 @@
-export { JestMinReporter } from "./JestMinReporter";
+export { JestCompactReporter } from "./JestCompactReporter";

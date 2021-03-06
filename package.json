@@ -1,8 +1,9 @@
 {
     "name": "jest-compact-reporter",
-    "version": "1.2.6",
+    "version": "1.2.7",
     "description": "A more comapct reporter for Jest.",
     "main": "./dist/index.js",
+    "types": "./dist/indes.d.ts",
     "scripts": {
         "test": "jest",
         "build": "tsc",
