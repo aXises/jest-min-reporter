@@ -20,6 +20,7 @@ import {
     yellow,
 } from "./";
 import { assertNever } from "assert-never";
+import { stripColour } from "./colours";
 
 const isFailing = (result: TestResult): boolean => {
     return Boolean(result.numFailingTests > 0 || result.failureMessage);
@@ -64,7 +65,9 @@ export const printFailedTestDiffs = (results: AggregatedResult) => {
                 const fullPath = processFullPath(suite.testFilePath);
                 const path = fullPath.path || "";
                 const file = fullPath.file || "";
-                const message = suite.failureMessage;
+                const message = global.reporterGlobals.coloursEnabled
+                    ? suite.failureMessage
+                    : stripColour(suite.failureMessage || "");
                 printf(
                     `${black(bgLightRed(" FAIL "))} ${path}${white(
                         file

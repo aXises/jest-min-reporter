@@ -17,3 +17,7 @@ export const green = colorize("\x1b[32m");
 export const lightRed = colorize("\x1b[91m");
 export const lightYellow = colorize("\x1b[93m");
 export const yellow = colorize("\x1b[33m");
+
+export const stripColour = (str: string) => {
+    return str.replace(/\x1B[[(?);]{0,2}(;?\d)*./g, "");
+};
