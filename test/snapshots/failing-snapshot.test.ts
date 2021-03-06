@@ -1,3 +1,3 @@
-it("Should match snapshot", () => {
-    expect("mysnapshot").toMatchSnapshot();
+it("Should not match snapshot", () => {
+    expect("invalid").toMatchSnapshot();
 });

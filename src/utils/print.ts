@@ -173,11 +173,6 @@ export const printFailedSuites = (suites: AggregatedResult) => {
 };
 
 export const printUncheckedSnapshotsSummary = (snapshot: SnapshotSummary) => {
-    printf(
-        `${bgLightRed(
-            black(" UNUSED SNAPSHOTS ")
-        )}  found. 'npm t -- -u' to remove them`
-    );
     snapshot.uncheckedKeysByFile.forEach((snapshotFiles) => {
         const { path, file } = fullPathToPrintable(
             processFullPath(snapshotFiles.filePath)
