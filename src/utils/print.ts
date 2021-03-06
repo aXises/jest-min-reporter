@@ -110,11 +110,12 @@ const makeTestFullName = (test: AssertionResult) => {
     return pathArray.join(" -> ");
 };
 
-const printTestStatus = (suite: TestResult) => {
+const printTestStatus = (suite: TestResult, showPassing: boolean = false) => {
     suite.testResults.forEach((test) => {
         switch (test.status) {
             case "passed":
-                printf(`${green("  ✓  ")}${makeTestFullName(test)}`);
+                showPassing &&
+                    printf(`${green("  ✓  ")}${makeTestFullName(test)}`);
                 return;
             case "failed":
                 printf(`${red("  ☓  ")}${yellow(makeTestFullName(test))}`);
@@ -144,7 +145,10 @@ const fullPathToPrintable = (fullPath: { path?: string; file?: string }) => {
     };
 };
 
-export const printPassedSuites = (suites: AggregatedResult) => {
+export const printPassedSuites = (
+    suites: AggregatedResult,
+    showPassing: boolean = false
+) => {
     suites.testResults.filter(not(isFailing)).ifAny((suites) => {
         printf("Passed suites:");
         suites.forEach((suite: TestResult) => {
@@ -152,13 +156,16 @@ export const printPassedSuites = (suites: AggregatedResult) => {
                 processFullPath(suite.testFilePath)
             );
             printf(`${bgLightGreen(black("  PASS  "))} ${path}${file}`);
-            printTestStatus(suite);
+            printTestStatus(suite, showPassing);
         });
         println(2);
     });
 };
 
-export const printFailedSuites = (suites: AggregatedResult) => {
+export const printFailedSuites = (
+    suites: AggregatedResult,
+    showPassing: boolean = false
+) => {
     suites.testResults.filter(isFailing).ifAny((suites: TestResult[]) => {
         printf("Failed suites:");
         suites.forEach((suite: TestResult) => {
@@ -166,7 +173,7 @@ export const printFailedSuites = (suites: AggregatedResult) => {
                 processFullPath(suite.testFilePath)
             );
             printf(`${bgLightRed(black("  FAIL  "))} ${path}${white(file)}`);
-            printTestStatus(suite);
+            printTestStatus(suite, showPassing);
         });
         println(2);
     });

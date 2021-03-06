@@ -15,6 +15,7 @@ import {
 export type ReporterOptions = {
     diffs: boolean;
     colours: boolean;
+    showPassingTests: boolean;
 };
 
 export class JestMinReporter extends BaseReporter {
@@ -30,6 +31,10 @@ export class JestMinReporter extends BaseReporter {
         this.options = {
             diffs: options.diffs === undefined ? true : options.diffs,
             colours: options.colours === undefined ? true : options.colours,
+            showPassingTests:
+                options.showPassingTests === undefined
+                    ? false
+                    : options.showPassingTests,
         };
         global.reporterGlobals = { coloursEnabled: this.options.colours };
     }
@@ -41,11 +46,11 @@ export class JestMinReporter extends BaseReporter {
     public onRunComplete(contexts: Set<Context>, results: AggregatedResult) {
         printHeaderOnComplete();
 
-        printPassedSuites(results);
+        printPassedSuites(results, this.options.showPassingTests);
 
         this.options.diffs && printFailedTestDiffs(results);
 
-        printFailedSuites(results);
+        printFailedSuites(results, this.options.showPassingTests);
 
         results.snapshot.failure &&
             printUncheckedSnapshotsSummary(results.snapshot);

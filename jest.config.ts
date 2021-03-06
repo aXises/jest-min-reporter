@@ -6,7 +6,10 @@ const config: Config.InitialOptions = {
     testEnvironment: "node",
     verbose: true,
     reporters: [
-        [path.join(__dirname, "dist"), { colours: true, diffs: false }],
+        [
+            path.join(__dirname, "dist"),
+            { colours: true, diffs: true, showPassingTests: true },
+        ],
     ],
     testMatch: [path.join(__dirname, "test", "**", "*")],
 };
