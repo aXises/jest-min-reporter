@@ -3,6 +3,7 @@ import type {
     AggregatedResult,
     SnapshotSummary,
     TestResult,
+    AssertionResult,
 } from "@jest/test-result";
 import {
     bgLightGreen,
@@ -18,8 +19,9 @@ import {
     white,
     yellow,
 } from "./";
+import { assertNever } from "assert-never";
 
-const suiteFailed = (result: TestResult): boolean => {
+const isFailing = (result: TestResult): boolean => {
     return Boolean(result.numFailingTests > 0 || result.failureMessage);
 };
 
@@ -35,11 +37,14 @@ export const println = (times: number = 1) => {
 
 export const printHeaderOnStart = () => {
     println(2);
+    const reporterVersionString = process.env.npm_package_version
+        ? `jest-min-reporter v${process.env.npm_package_version}`
+        : "";
     printf(
         white(
             `Jest v${getVersion()} node ${process.version} ${
                 process.platform
-            } jest-min-reporter v${process.env.npm_package_version}`
+            } ${reporterVersionString}`
         )
     );
 };
@@ -50,25 +55,25 @@ export const printHeaderOnComplete = () => {
 };
 
 export const printFailedTestDiffs = (results: AggregatedResult) => {
-    const failed = results.testResults.filter((suite) => suite.failureMessage);
+    results.testResults
+        .filter((suite) => suite.failureMessage)
+        .ifAny((suites: TestResult[]) => {
+            suites.forEach((suite) => {
+                printf("Failed test diffs:");
 
-    failed.ifAny((suites: TestResult[]) => {
-        suites.forEach((suite) => {
-            printf("Failed test diffs:");
+                const fullPath = processFullPath(suite.testFilePath);
+                const path = fullPath.path || "";
+                const file = fullPath.file || "";
+                const message = suite.failureMessage;
+                printf(
+                    `${black(bgLightRed(" FAIL "))} ${path}${white(
+                        file
+                    )}\n${message}`
+                );
 
-            const fullPath = processFullPath(suite.testFilePath);
-            const path = fullPath.path || "";
-            const file = fullPath.file || "";
-            const message = suite.failureMessage;
-            printf(
-                `${black(bgLightRed(" FAIL "))} ${path}${white(
-                    file
-                )}\n${message}`
-            );
-
-            println();
+                println();
+            });
         });
-    });
 };
 
 export const printSummary = (results: AggregatedResult) => {
@@ -99,45 +104,72 @@ export const printSummary = (results: AggregatedResult) => {
     printf(`Time:   ${timeObj(Date.now() - results.startTime)}`);
 };
 
-export const printPassedSuites = (suites: AggregatedResult) => {
-    const passed = suites.testResults.filter(suiteFailed);
-
-    if (passed.length > 0) {
-        printf("Passed suites:");
-        passed.ifAny((suites) => {
-            suites.forEach((suite: TestResult) => {
-                const fullPath = processFullPath(suite.testFilePath);
-                const path = fullPath.path || "";
-                const file = fullPath.file || "";
-                printf(`${bgLightGreen(black(" PASS "))} ${path}${file}`);
-            });
-            println(2);
-        });
-    }
+const makeTestFullName = (test: AssertionResult) => {
+    const pathArray = test.ancestorTitles;
+    pathArray.push(test.title);
+    return pathArray.join(" -> ");
 };
 
-const printFailedTestNames = (suite: TestResult) => {
-    suite.testResults
-        .filter((test) => test.status === "failed")
-        .forEach((test) => printf(`${red("  ? ")}${yellow(test.fullName)}`));
+const printTestStatus = (suite: TestResult) => {
+    suite.testResults.forEach((test) => {
+        switch (test.status) {
+            case "passed":
+                printf(`${green("  ✓  ")}${makeTestFullName(test)}`);
+                return;
+            case "failed":
+                printf(`${red("  ☓  ")}${yellow(makeTestFullName(test))}`);
+                return;
+            case "skipped":
+                printf(`${white("  ○  ")}${makeTestFullName(test)} (Skipped)`);
+                return;
+            case "pending":
+                printf(`${white("  ○  ")}${makeTestFullName(test)} (Pending)`);
+                return;
+            case "todo":
+                printf(`${white("  ○  ")}${makeTestFullName(test)} (Todo)`);
+                return;
+            case "disabled":
+                printf(`${white("  ○  ")}${makeTestFullName(test)} (Disabled)`);
+                return;
+            default:
+                assertNever(test.status);
+        }
+    });
+};
+
+const fullPathToPrintable = (fullPath: { path?: string; file?: string }) => {
+    return {
+        path: fullPath.path || "",
+        file: fullPath.file || "",
+    };
+};
+
+export const printPassedSuites = (suites: AggregatedResult) => {
+    suites.testResults.filter(not(isFailing)).ifAny((suites) => {
+        printf("Passed suites:");
+        suites.forEach((suite: TestResult) => {
+            const { path, file } = fullPathToPrintable(
+                processFullPath(suite.testFilePath)
+            );
+            printf(`${bgLightGreen(black("  PASS  "))} ${path}${file}`);
+            printTestStatus(suite);
+        });
+        println(2);
+    });
 };
 
 export const printFailedSuites = (suites: AggregatedResult) => {
-    const failed = suites.testResults.filter(not(suiteFailed));
-
-    if (failed.length > 0) {
+    suites.testResults.filter(isFailing).ifAny((suites: TestResult[]) => {
         printf("Failed suites:");
-        failed.ifAny((suites: TestResult[]) => {
-            suites.forEach((suite: TestResult) => {
-                const fullPath = processFullPath(suite.testFilePath);
-                const path = fullPath.path || "";
-                const file = fullPath.file || "";
-                printf(`${bgLightRed(black(" FAIL "))} ${path}${white(file)}`);
-                printFailedTestNames(suite);
-            });
+        suites.forEach((suite: TestResult) => {
+            const { path, file } = fullPathToPrintable(
+                processFullPath(suite.testFilePath)
+            );
+            printf(`${bgLightRed(black("  FAIL  "))} ${path}${white(file)}`);
+            printTestStatus(suite);
         });
         println(2);
-    }
+    });
 };
 
 export const printUncheckedSnapshotsSummary = (snapshot: SnapshotSummary) => {
@@ -147,9 +179,9 @@ export const printUncheckedSnapshotsSummary = (snapshot: SnapshotSummary) => {
         )}  found. 'npm t -- -u' to remove them`
     );
     snapshot.uncheckedKeysByFile.forEach((snapshotFiles) => {
-        const fullPath = processFullPath(snapshotFiles.filePath);
-        const path = fullPath.path || "";
-        const file = fullPath.file || "";
+        const { path, file } = fullPathToPrintable(
+            processFullPath(snapshotFiles.filePath)
+        );
         printf(`${path}${white(file)}`);
     });
     println(2);
