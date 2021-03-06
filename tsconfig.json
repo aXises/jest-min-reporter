@@ -9,9 +9,9 @@
         "outDir": "dist",
         "alwaysStrict": true,
         "strict": true,
-        "typeRoots": ["./@types"],
+        "typeRoots": ["./@types", "./node_modules/@types"],
     },
     "filesGlob": ["./**/*.ts"],
     "exclude": [],
-    "include": ["./src/**/*", "./test/**/*.ts", "@types/**/*"]
+    "include": ["./src/**/*", "@types/**/*"]
 }
