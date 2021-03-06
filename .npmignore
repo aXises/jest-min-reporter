@@ -6,6 +6,5 @@ tsconfig.prod.json
 .eslintrc
 .prettierrc
 dist/**/*.js.map
-dist/**/*.d.ts
 @types/**/*
 tests/**/*

@@ -1,6 +1,6 @@
 {
     "name": "jest-compact-reporter",
-    "version": "1.2.7",
+    "version": "1.2.8",
     "description": "A more comapct reporter for Jest.",
     "main": "./dist/index.js",
     "types": "./dist/indes.d.ts",
@@ -8,6 +8,7 @@
         "test": "jest",
         "build": "tsc",
         "build-prod": "tsc --project tsconfig.prod.json",
+        "declaration": "tsc --declaration  --out index.d.ts",
         "build-and-test": "npm run build && npm run test",
         "prettier": "prettier --write .",
         "prepublish": "npm run build-prod"

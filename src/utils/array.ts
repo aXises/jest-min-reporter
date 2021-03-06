@@ -1,5 +1,5 @@
 interface Array<T> {
-    ifAny: (fn: (v: Array<T>) => void) => Array<T>;
+    ifAny: (fn: (v:T[]) => void) => T[];
 }
 
 Array.prototype.ifAny = function (fn) {
