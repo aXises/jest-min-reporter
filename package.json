@@ -1,6 +1,6 @@
 {
     "name": "jest-compact-reporter",
-    "version": "1.2.8",
+    "version": "1.2.9",
     "description": "A more comapct reporter for Jest.",
     "main": "./dist/index.js",
     "types": "./dist/indes.d.ts",
@@ -15,7 +15,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/aXises/jest-compact-reporter.git"
+        "url": "git+https://github.com/fatton139/jest-compact-reporter.git"
     },
     "keywords": [
         "jest",
@@ -30,9 +30,9 @@
     ],
     "license": "Unlicense",
     "bugs": {
-        "url": "https://github.com/aXises/jest-compact-reporter/issues"
+        "url": "https://github.com/fatton139/jest-compact-reporter/issues"
     },
-    "homepage": "https://github.com/aXises/jest-compact-reporter#readme",
+    "homepage": "https://github.com/fatton139/jest-compact-reporter#readme",
     "devDependencies": {
         "@types/jest": "^26.0.20",
         "eslint": "^7.21.0",
